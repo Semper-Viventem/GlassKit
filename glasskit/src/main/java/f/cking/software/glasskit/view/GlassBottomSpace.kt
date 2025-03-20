@@ -1,4 +1,4 @@
-package f.cking.software.glasskit.effect.view
+package f.cking.software.glasskit.view
 
 import android.annotation.SuppressLint
 import android.graphics.Rect

@@ -88,7 +88,7 @@ fun Modifier.glassPanel(
     glassShader.setFloatUniform(GlassShader.ARG_BLUR, blurRadius)
     glassShader.setFloatUniform(GlassShader.ARG_ABERRATION_INDEX, aberrationIndex)
 
-    glassShader.setFloatUniform(GlassShader.ARG_RESOLUTION, contentSize.width.toFloat(), contentSize.height.toFloat())
+    glassShader.setFloatUniform(GlassShader.ARG_RESOLUTION, contentSize.width, contentSize.height)
     glassShader.setFloatUniform(GlassShader.ARG_PANEL_HEIGHT, rect.height().toFloat())
     glassShader.setFloatUniform(GlassShader.ARG_PANEL_WIDTH, rect.width().toFloat())
     glassShader.setFloatUniform(GlassShader.ARG_PANEL_X, rect.left.toFloat())
