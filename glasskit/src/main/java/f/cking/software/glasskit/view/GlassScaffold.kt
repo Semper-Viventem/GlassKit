@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.graphics.Rect
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,8 +16,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onGloballyPositioned
+import f.cking.software.glasskit.effect.blur.progressiveBlurShader
 import f.cking.software.glasskit.effect.glass.glassPanel
 import f.cking.software.glasskit.utils.letIf
+import f.cking.software.glasskit.utils.letIfNotNull
 import f.cking.software.glasskit.utils.toDp
 
 @SuppressLint("NewApi")
@@ -32,6 +35,8 @@ fun GlassScaffold(
     Box(
         modifier = modifier
     ) {
+
+        val tint = remember(effect) { (effect as? Effect.WithTint)?.tint }
 
         var topBarHeight by remember { mutableIntStateOf(0) }
         var bottomBarHeight by remember { mutableIntStateOf(0) }
@@ -56,8 +61,8 @@ fun GlassScaffold(
                 }
                 .letIf(isRenderEffectSupported) { contentModifier ->
                     contentModifier
-                        .withEffect(effect, topRect)
-                        .withEffect(effect, bottomRect)
+                        .withEffect(effect, topRect, isTop = true)
+                        .withEffect(effect, bottomRect, isTop = false)
                 }
         ) {
             content(PaddingValues(top = topBarHeight.toDp(), bottom = bottomBarHeight.toDp()))
@@ -65,6 +70,9 @@ fun GlassScaffold(
 
         Box(
             modifier = Modifier.align(Alignment.TopCenter)
+                .letIfNotNull(tint) { modifier, tint ->
+                    modifier.background(tint)
+                }
                 .onGloballyPositioned { topBarHeight = it.size.height }
         ) {
             topBar()
@@ -72,6 +80,9 @@ fun GlassScaffold(
 
         Box(
             modifier = Modifier.align(Alignment.BottomCenter)
+                .letIfNotNull(tint) { modifier, tint ->
+                    modifier.background(tint)
+                }
                 .onGloballyPositioned { bottomBarHeight = it.size.height }
         ) {
             bottomBar()
@@ -81,10 +92,10 @@ fun GlassScaffold(
 
 @Composable
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
-private fun Modifier.withEffect(effect: Effect, rect: Rect): Modifier {
+private fun Modifier.withEffect(effect: Effect, rect: Rect, isTop: Boolean): Modifier {
     return when (effect) {
         is Effect.Glass -> this.withGlassEffect(effect, rect)
-        is Effect.ProgressiveBlur -> this.withProgressiveBlurEffect(effect, rect)
+        is Effect.ProgressiveBlur -> this.withProgressiveBlurEffect(effect, rect, isTop)
         is Effect.Blur -> this.withBlurEffect(effect, rect)
     }
 }
@@ -102,14 +113,15 @@ private fun Modifier.withGlassEffect(effect: Effect.Glass, rect: Rect): Modifier
     )
 }
 
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
-private fun Modifier.withProgressiveBlurEffect(effect: Effect.ProgressiveBlur, rect: Rect): Modifier {
-    throw NotImplementedError("Not implemented yet")
-    return this
+private fun Modifier.withProgressiveBlurEffect(effect: Effect.ProgressiveBlur, rect: Rect, isTop: Boolean): Modifier {
+    val range = if (isTop) 1f to 0f else  0f to 1f
+    return this.progressiveBlurShader(rect, effect.maxBlurRadius, range.first, range.second)
 }
 
 @Composable
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 private fun Modifier.withBlurEffect(effect: Effect.Blur, rect: Rect): Modifier {
-    throw NotImplementedError("Not implemented yet")
-    return this
+    return this.progressiveBlurShader(rect, effect.radius, 1f, 1f)
 }

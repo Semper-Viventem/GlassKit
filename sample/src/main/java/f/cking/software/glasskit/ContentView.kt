@@ -33,6 +33,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -63,7 +64,7 @@ object ContentView {
                     onEffectSelected = { selected -> currentEffect = selected }
                 )
             },
-            effect = currentEffect.effect,
+            effect = currentEffect.effect(),
         )
     }
 
@@ -75,8 +76,7 @@ object ContentView {
     ) {
         Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .background(TopAppBarDefaults.topAppBarColors().containerColor.copy(0.3f)),
+                .fillMaxWidth(),
         ) {
             Row(
                 modifier = Modifier
@@ -141,30 +141,37 @@ object ContentView {
     @Composable
     private fun Header() {
         TopAppBar(
-            colors = TopAppBarDefaults.topAppBarColors().copy(containerColor = TopAppBarDefaults.topAppBarColors().containerColor.copy(0.3f)),
+            colors = TopAppBarDefaults.topAppBarColors().copy(containerColor = Color.Transparent),
             title = {
                 Text(stringResource(R.string.app_name))
             }
         )
     }
 
+    @OptIn(ExperimentalMaterial3Api::class)
     private enum class BottomBarItem(
-        val effect: Effect,
+        val effect: @Composable () -> Effect,
         @StringRes val stringRes: Int,
         @DrawableRes val iconRes: Int,
     ) {
         GLASS(
-            effect = Effect.Glass(blurRadius = 6f, tilt = Tilt.Motion),
+            effect = {
+                Effect.Glass(
+                    blurRadius = 6f,
+                    tilt = Tilt.Motion,
+                    tint = TopAppBarDefaults.topAppBarColors().containerColor.copy(0.3f),
+                )
+            },
             stringRes = R.string.effect_name_glass,
             iconRes = R.drawable.ic_glass,
         ),
         PROGRESSIVE_BLUR(
-            effect = Effect.ProgressiveBlur(),
+            effect = { Effect.ProgressiveBlur() },
             stringRes = R.string.effect_name_progressive_blur,
             iconRes = R.drawable.ic_progressive_blur,
         ),
         BLUR(
-            effect = Effect.Blur(),
+            effect = { Effect.Blur(tint = TopAppBarDefaults.topAppBarColors().containerColor.copy(0.3f)) },
             stringRes = R.string.effect_name_blur,
             iconRes = R.drawable.ic_blur,
         ),

@@ -9,7 +9,6 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Build
-import android.util.Log
 import androidx.annotation.FloatRange
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
@@ -77,7 +76,6 @@ internal fun Modifier.glassPanel(
         }
     }
 
-    Log.d("SHADER", "Update shader params")
     glassShader.setFloatUniform(GlassShader.ARG_REFRACTION_INDEX, refractionIndex)
     glassShader.setIntUniform(GlassShader.ARG_CURVE_TYPE, curveType::class.getType())
     glassShader.setFloatUniform(GlassShader.ARG_CURVE_PARAM_A, curveType.A)
@@ -104,7 +102,6 @@ internal fun Modifier.glassPanel(
         }
         .then(
             graphicsLayer {
-                Log.d("SHADER", "Reset shader")
                 renderEffect = shaderRenderEffect
             }
         )
