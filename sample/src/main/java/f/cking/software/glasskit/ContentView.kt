@@ -6,12 +6,18 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -66,23 +72,43 @@ object ContentView {
         selected: BottomBarItem,
         onEffectSelected: (selected: BottomBarItem) -> Unit,
     ) {
-        Row(Modifier.fillMaxWidth().height(56.dp).background(TopAppBarDefaults.topAppBarColors().containerColor.copy(0.3f))) {
-            BottomBarItem.entries.forEach { effect ->
-                Column(
-                    modifier = Modifier.weight(1f).fillMaxHeight()
-                        .clickable { onEffectSelected.invoke(effect) },
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center,
-                ) {
-                    Icon(
-                        painter = painterResource(effect.iconRes),
-                        contentDescription = stringResource(effect.stringRes),
-                        tint = if (selected == effect) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.secondary
-                    )
-                    Text(stringResource(effect.stringRes))
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(TopAppBarDefaults.topAppBarColors().containerColor.copy(0.3f)),
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp)
+                    .height(56.dp),
+            ) {
+                BottomBarItem.entries.forEach { effect ->
+                    Column(
+                        modifier = Modifier.weight(1f).fillMaxHeight()
+                            .clickable { onEffectSelected.invoke(effect) },
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center,
+                    ) {
+                        Icon(
+                            painter = painterResource(effect.iconRes),
+                            contentDescription = stringResource(effect.stringRes),
+                            tint = MaterialTheme.colorScheme.onSurface
+                        )
+                        Text(stringResource(effect.stringRes))
+                        if (selected == effect) {
+                            Box(Modifier.height(2.dp).padding(horizontal = 8.dp).fillMaxSize().background(MaterialTheme.colorScheme.primary))
+                        }
+                    }
                 }
             }
+            SystemNavbarSpacer()
         }
+    }
+
+    @Composable
+    fun SystemNavbarSpacer() {
+        Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.systemBars))
     }
 
     @Composable
