@@ -166,7 +166,13 @@ object ContentView {
             iconRes = R.drawable.ic_glass,
         ),
         PROGRESSIVE_BLUR(
-            effect = { Effect.ProgressiveBlur() },
+            effect = {
+                Effect.ProgressiveBlur(
+                    topMultiplier = 1.5f,
+                    bottomMultiplier = 1.5f,
+                    tint = TopAppBarDefaults.topAppBarColors().containerColor.copy(0.4f)
+                )
+            },
             stringRes = R.string.effect_name_progressive_blur,
             iconRes = R.drawable.ic_progressive_blur,
         ),

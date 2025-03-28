@@ -13,7 +13,10 @@ sealed interface Effect {
     ) : Effect, WithTint
 
     data class ProgressiveBlur(
-        val maxBlurRadius: Float = 24f
+        val maxBlurRadius: Float = 24f,
+        val topMultiplier: Float = 1f,
+        val bottomMultiplier: Float = 1f,
+        val tint: Color = Color.Transparent,
     ) : Effect
 
     data class Glass(
