@@ -37,6 +37,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import f.cking.software.glasskit.effect.glass.Tilt
 import f.cking.software.glasskit.view.Effect
 import f.cking.software.glasskit.view.GlassScaffold
 
@@ -153,7 +154,7 @@ object ContentView {
         @DrawableRes val iconRes: Int,
     ) {
         GLASS(
-            effect = Effect.Glass(blurRadius = 8f),
+            effect = Effect.Glass(blurRadius = 6f, tilt = Tilt.Motion),
             stringRes = R.string.effect_name_glass,
             iconRes = R.drawable.ic_glass,
         ),

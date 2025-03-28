@@ -9,6 +9,7 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Build
+import android.util.Log
 import androidx.annotation.FloatRange
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
@@ -76,6 +77,7 @@ internal fun Modifier.glassPanel(
         }
     }
 
+    Log.d("SHADER", "Update shader params")
     glassShader.setFloatUniform(GlassShader.ARG_REFRACTION_INDEX, refractionIndex)
     glassShader.setIntUniform(GlassShader.ARG_CURVE_TYPE, curveType::class.getType())
     glassShader.setFloatUniform(GlassShader.ARG_CURVE_PARAM_A, curveType.A)
@@ -90,7 +92,7 @@ internal fun Modifier.glassPanel(
     glassShader.setFloatUniform(GlassShader.ARG_PANEL_Y, rect.top.toFloat())
     glassShader.setFloatUniform(GlassShader.ARG_TILT, tiltFixed.x, tiltFixed.y)
 
-    val shaderRenderEffect = remember(rect, contentSize) {
+    val shaderRenderEffect = remember(rect, contentSize, tiltFixed) {
         RenderEffect
             .createRuntimeShaderEffect(glassShader, GlassShader.ARG_CONTENT)
             .asComposeRenderEffect()
@@ -102,6 +104,7 @@ internal fun Modifier.glassPanel(
         }
         .then(
             graphicsLayer {
+                Log.d("SHADER", "Reset shader")
                 renderEffect = shaderRenderEffect
             }
         )
@@ -156,8 +159,8 @@ sealed interface Tilt {
     ) : Tilt
 
     data class Motion(
-        val xMultiplayer: Float = 0.05f,
-        val yMultiplayer: Float = 0.02f,
+        val xMultiplayer: Float = 0.04f,
+        val yMultiplayer: Float = 0.015f,
     ) : Tilt
 
     companion object {

@@ -92,15 +92,13 @@ private fun Modifier.withEffect(effect: Effect, rect: Rect): Modifier {
 @Composable
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 private fun Modifier.withGlassEffect(effect: Effect.Glass, rect: Rect): Modifier {
-    return this.then(
-        glassPanel(
-            rect = rect,
-            material = effect.material,
-            aberrationIndex = effect.aberrationIndex,
-            curveType = effect.curveType,
-            blurRadius = effect.blurRadius,
-            tilt = effect.tilt,
-        )
+    return this.glassPanel(
+        rect = rect,
+        material = effect.material,
+        aberrationIndex = effect.aberrationIndex,
+        curveType = effect.curveType,
+        blurRadius = effect.blurRadius,
+        tilt = effect.tilt,
     )
 }
 
