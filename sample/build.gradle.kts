@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId = "f.cking.software.glasskit"
-        minSdk = 29
+        minSdk = 31
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
@@ -45,13 +45,27 @@ android {
 
 dependencies {
 
-    implementation(libs.androidx.core.ktx)
+    // glass lib module
+    implementation(project(":glasskit"))
+
+    // appcompat
     implementation(libs.androidx.appcompat)
+
+    // android jetpack
     implementation(libs.material)
+    implementation(libs.lifecycle.viewmodel.ktx)
+
+    // compose
     implementation(libs.compose.ui)
     implementation(libs.compose.foundation)
     implementation(libs.compose.tooling)
-    implementation(project(":glasskit"))
+    implementation(libs.lifecycle.compose)
+    implementation(libs.compose.activity)
+    implementation(libs.ktx)
+    debugImplementation(libs.compose.tooling)
+    implementation(libs.compose.tooling.preview)
+    implementation(libs.compose.material3)
+    implementation(libs.compose.animation)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

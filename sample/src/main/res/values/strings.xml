@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">GlassKit</string>
+    <string name="effect_name_glass">Glass</string>
+    <string name="effect_name_progressive_blur">Progressive blur</string>
+    <string name="effect_name_blur">Blur</string>
 </resources>

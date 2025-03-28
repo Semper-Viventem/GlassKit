@@ -22,13 +22,16 @@ import f.cking.software.glasskit.utils.toDp
 @SuppressLint("NewApi")
 @Composable
 fun GlassScaffold(
+    effect: Effect,
     modifier: Modifier = Modifier,
     topBar: @Composable () -> Unit = {},
     bottomBar: @Composable () -> Unit = {},
-    effect: Effect,
     content: @Composable (PaddingValues) -> Unit
 ) {
-    Box(modifier = modifier) {
+
+    Box(
+        modifier = modifier
+    ) {
 
         var topBarHeight by remember { mutableIntStateOf(0) }
         var bottomBarHeight by remember { mutableIntStateOf(0) }
@@ -89,13 +92,15 @@ private fun Modifier.withEffect(effect: Effect, rect: Rect): Modifier {
 @Composable
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 private fun Modifier.withGlassEffect(effect: Effect.Glass, rect: Rect): Modifier {
-    return this.glassPanel(
-        rect = rect,
-        material = effect.material,
-        aberrationIndex = effect.aberrationIndex,
-        curveType = effect.curveType,
-        blurRadius = effect.blurRadius,
-        tilt = effect.tilt,
+    return this.then(
+        glassPanel(
+            rect = rect,
+            material = effect.material,
+            aberrationIndex = effect.aberrationIndex,
+            curveType = effect.curveType,
+            blurRadius = effect.blurRadius,
+            tilt = effect.tilt,
+        )
     )
 }
 
