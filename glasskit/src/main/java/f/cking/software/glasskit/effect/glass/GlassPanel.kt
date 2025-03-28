@@ -26,19 +26,17 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalContext
 import f.cking.software.glasskit.effect.glass.GlassShader.CurveType.Companion.getType
-import f.cking.software.glasskit.utils.dpToPx
 import kotlin.concurrent.timer
 import kotlin.math.max
 import kotlin.math.min
 
 @Composable
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
-fun Modifier.glassPanel(
+internal fun Modifier.glassPanel(
     rect: Rect,
     material: RefractionMaterial = RefractionMaterial.GLASS,
     aberrationIndex: Float = 0.1f,
     curveType: GlassShader.CurveType = GlassShader.CurveType.Mod,
-    elevationPx: Float = LocalContext.current.dpToPx(8f).toFloat(),
     blurRadius: Float = 0f,
     tilt: Tilt = Tilt.Fixed(),
 ): Modifier = this.glassPanel(
@@ -46,19 +44,17 @@ fun Modifier.glassPanel(
     refractionIndex = material.refractionIndex,
     aberrationIndex = aberrationIndex,
     curveType = curveType,
-    elevationPx = elevationPx,
     blurRadius = blurRadius,
     tilt = tilt,
 )
 
 @Composable
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
-fun Modifier.glassPanel(
+internal fun Modifier.glassPanel(
     rect: Rect,
     refractionIndex: Float = RefractionMaterial.GLASS.refractionIndex,
     aberrationIndex: Float = 0.1f,
     curveType: GlassShader.CurveType = GlassShader.CurveType.Mod,
-    elevationPx: Float = LocalContext.current.dpToPx(8f).toFloat(),
     blurRadius: Float = 0f,
     tilt: Tilt = Tilt.Fixed(),
 ): Modifier = composed {
@@ -80,7 +76,6 @@ fun Modifier.glassPanel(
         }
     }
 
-    glassShader.setFloatUniform(GlassShader.ARG_ELEVATION, elevationPx)
     glassShader.setFloatUniform(GlassShader.ARG_REFRACTION_INDEX, refractionIndex)
     glassShader.setIntUniform(GlassShader.ARG_CURVE_TYPE, curveType::class.getType())
     glassShader.setFloatUniform(GlassShader.ARG_CURVE_PARAM_A, curveType.A)

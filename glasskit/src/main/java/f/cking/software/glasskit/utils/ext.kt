@@ -2,18 +2,21 @@ package f.cking.software.glasskit.utils
 
 import android.content.Context
 import android.util.TypedValue
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.Dp
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 
 
-fun Context.dpToPx(value: Float): Int =
+internal fun Context.dpToPx(value: Float): Int =
     TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, resources.displayMetrics).toInt()
 
-fun Context.pxToDp(value: Float): Float = value / resources.displayMetrics.density
+internal fun Context.pxToDp(value: Float): Float = value / resources.displayMetrics.density
 
 @OptIn(ExperimentalContracts::class)
-inline fun <T> T.letIf(condition: () -> Boolean, block: (T) -> T): T {
+internal inline fun <T> T.letIf(condition: () -> Boolean, block: (T) -> T): T {
     contract {
         callsInPlace(block, InvocationKind.EXACTLY_ONCE)
     }
@@ -21,9 +24,19 @@ inline fun <T> T.letIf(condition: () -> Boolean, block: (T) -> T): T {
 }
 
 @OptIn(ExperimentalContracts::class)
-inline fun <T> T.letIf(condition: Boolean, block: (T) -> T): T {
+internal inline fun <T> T.letIf(condition: Boolean, block: (T) -> T): T {
     contract {
         callsInPlace(block, InvocationKind.EXACTLY_ONCE)
     }
     return if (condition) block(this) else this
+}
+
+@Composable
+internal fun Float.toPx(): Int {
+    return LocalContext.current.dpToPx(this)
+}
+
+@Composable
+internal fun Int.toDp(): Dp {
+    return Dp(LocalContext.current.pxToDp(this.toFloat()))
 }

@@ -7,7 +7,6 @@ import kotlin.reflect.KClass
 object GlassShader {
 
     const val ARG_CONTENT = "content"
-    const val ARG_ELEVATION = "elevation"
     const val ARG_REFRACTION_INDEX = "refractionIndex"
     const val ARG_RESOLUTION = "iResolution"
     const val ARG_PANEL_HEIGHT = "panelHeigh"
@@ -51,7 +50,6 @@ object GlassShader {
     @Language("AGSL")
     val GLASS_SHADER_ADVANCED = """
         uniform shader $ARG_CONTENT;
-        uniform float $ARG_ELEVATION;
         uniform float $ARG_REFRACTION_INDEX;
         uniform float2 $ARG_RESOLUTION;
         uniform float $ARG_PANEL_HEIGHT;

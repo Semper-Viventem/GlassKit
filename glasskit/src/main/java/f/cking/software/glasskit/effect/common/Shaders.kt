@@ -2,7 +2,7 @@ package f.cking.software.glasskit.effect.common
 
 import org.intellij.lang.annotations.Language
 
-object Shaders {
+internal object Shaders {
     const val ARG_CONTENT = "content"
 
     @Language("AGSL")

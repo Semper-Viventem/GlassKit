@@ -34,7 +34,7 @@ import f.cking.software.glasskit.effect.glass.glassPanel
 import f.cking.software.glasskit.utils.dpToPx
 import f.cking.software.glasskit.utils.letIf
 
-data object GlassBottomSpaceDefaults {
+internal data object GlassBottomSpaceDefaults {
     const val BLUR = 4f
 }
 
@@ -126,7 +126,6 @@ fun GlassBottomSpace(
 fun Modifier.glassBottom(
     heightPx: Float,
     curveType: GlassShader.CurveType = GlassShader.CurveType.Mod,
-    elevationPx: Float = LocalContext.current.dpToPx(8f).toFloat(),
     blurRadius: Float = GlassBottomSpaceDefaults.BLUR,
 ): Modifier = composed {
 
@@ -145,7 +144,6 @@ fun Modifier.glassBottom(
                     contentSize.value.height.toInt(),
                 ),
                 curveType = curveType,
-                elevationPx = elevationPx,
                 material = RefractionMaterial.GLASS,
                 blurRadius = blurRadius,
                 tilt = Tilt.Motion(0.04f, 0.015f),
